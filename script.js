@@ -663,11 +663,14 @@ function downloadFinalAccountsPDF() {
     doc.save('FinalAccounts_Maa_Gayatri_Book.pdf');
 }
 
-// Initialize displays
-displayStockPurchases();
-displaySales();
-displayOldJewelPurchases();
-displayPledges();
-displayPledgeRedemptions();
-displayCashTransactions();
-displayParties();
+// Initialize displays and show Home section
+document.addEventListener('DOMContentLoaded', () => {
+    displayStockPurchases();
+    displaySales();
+    displayOldJewelPurchases();
+    displayPledges();
+    displayPledgeRedemptions();
+    displayCashTransactions();
+    displayParties();
+    showSection('home');
+});
