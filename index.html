@@ -155,9 +155,12 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Cash Transaction</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <input type="date" id="cash-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="cash-description" placeholder="Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <div class="relative">
+                    <input type="text" id="cash-description" placeholder="Description" list="debtor-suggestions" class="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <datalist id="debtor-suggestions"></datalist>
+                </div>
                 <input type="number" id="cash-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="cash-type" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <select id="cash-type" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" onchange="updateDebtorSuggestions()">
                     <option value="receipt">Receipt</option>
                     <option value="payment">Payment</option>
                 </select>
