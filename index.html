@@ -203,13 +203,13 @@
         <div id="reports" class="section hidden bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Reports</h2>
             <div class="flex flex-wrap gap-4 mb-6">
-                <button onclick="generateJournal()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Journal</button>
+                <button onclick="showSection('reports'); generateJournal()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Journal</button>
                 <button onclick="downloadJournalPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Journal PDF</button>
-                <button onclick="generateLedger()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Ledger</button>
+                <button onclick="showSection('reports'); generateLedger()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Ledger</button>
                 <button onclick="downloadLedgerPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Ledger PDF</button>
-                <button onclick="generateTrialBalance()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Trial Balance</button>
+                <button onclick="showSection('reports'); generateTrialBalance()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Trial Balance</button>
                 <button onclick="downloadTrialBalancePDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Trial Balance PDF</button>
-                <button onclick="generateFinalAccounts()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Final Accounts</button>
+                <button onclick="showSection('reports'); generateFinalAccounts()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Final Accounts</button>
                 <button onclick="downloadFinalAccountsPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Final Accounts PDF</button>
             </div>
             <div id="report-output" class="mt-6 p-4 bg-gray-50 rounded-lg"></div>
