@@ -22,6 +22,7 @@ function showSection(sectionId) {
     if (sectionId === 'pledge-redeem') updatePledgeDropdown();
     if (sectionId === 'stock-purchase' || sectionId === 'old-jewel') updateCreditorDropdown();
     if (sectionId === 'sales') updateDebtorDropdown();
+    if (sectionId === 'cash') updateDebtorSuggestions();
 }
 
 function updateCreditorDropdown() {
@@ -61,6 +62,19 @@ function updatePledgeDropdown() {
     });
 }
 
+function updateDebtorSuggestions() {
+    const type = document.getElementById('cash-type').value;
+    const datalist = document.getElementById('debtor-suggestions');
+    datalist.innerHTML = '';
+    if (type === 'receipt') {
+        parties.filter(party => party.type === 'debtor' && party.amount > 0).forEach(party => {
+            const option = document.createElement('option');
+            option.value = party.name;
+            datalist.appendChild(option);
+        });
+    }
+}
+
 function addStockPurchase() {
     const date = document.getElementById('stock-date').value;
     const description = document.getElementById('stock-description').value;
@@ -85,9 +99,19 @@ function addSale() {
     const debtor = document.getElementById('sale-debtor').value;
     if (date && description && metal && quantity && amount) {
         sales.push({ date, description, metal, quantity, amount, debtor });
+        if (debtor) {
+            const debtorParty = parties.find(p => p.name === debtor && p.type === 'debtor');
+            if (debtorParty) {
+                debtorParty.amount += amount;
+            } else {
+                parties.push({ name: debtor, amount, type: 'debtor' });
+            }
+        }
         saveData();
         displaySales();
         clearInputs('sale');
+        updateDebtorDropdown();
+        updateDebtorSuggestions();
     }
 }
 
@@ -143,9 +167,20 @@ function addCashTransaction() {
     const type = document.getElementById('cash-type').value;
     if (date && description && amount) {
         cashTransactions.push({ date, description, amount, type });
+        if (type === 'receipt') {
+            const debtorParty = parties.find(p => p.name === description && p.type === 'debtor');
+            if (debtorParty) {
+                debtorParty.amount = Math.max(0, debtorParty.amount - amount);
+                if (debtorParty.amount === 0) {
+                    parties = parties.filter(p => p !== debtorParty);
+                }
+            }
+        }
         saveData();
         displayCashTransactions();
         clearInputs('cash');
+        updateDebtorSuggestions();
+        displayParties();
     }
 }
 
@@ -154,12 +189,18 @@ function addParty() {
     const amount = parseFloat(document.getElementById('party-amount').value);
     const type = document.getElementById('party-type').value;
     if (name && amount) {
-        parties.push({ name, amount, type });
+        const existingParty = parties.find(p => p.name === name && p.type === type);
+        if (existingParty) {
+            existingParty.amount += amount;
+        } else {
+            parties.push({ name, amount, type });
+        }
         saveData();
         displayParties();
         clearInputs('party');
         updateCreditorDropdown();
         updateDebtorDropdown();
+        updateDebtorSuggestions();
     }
 }
 
@@ -460,7 +501,7 @@ function generateTrialBalance() {
         trialBalance += `<tr><td class="border p-2">${account}</td><td class="border p-2">${debit}</td><td class="border p-2">${credit}</td></tr>`;
         totalDebit += debit;
         totalCredit += credit;
-    }
+    });
     trialBalance += `<tr><td class="border p-2 font-bold">Total</td><td class="border p-2 font-bold">${totalDebit}</td><td class="border p-2 font-bold">${totalCredit}</td></tr>`;
     trialBalance += '</tbody></table>';
     document.getElementById('report-output').innerHTML = trialBalance;
@@ -541,12 +582,11 @@ function generateFinalAccounts() {
     cashBalance -= pledges.reduce((sum, p) => sum + p.amount, 0);
     cashBalance += pledgeRedemptions.reduce((sum, r) => sum + r.amount, 0);
     let debtors = parties.filter(p => p.type === 'debtor').reduce((sum, p) => sum + p.amount, 0);
-    debtors += sales.filter(s => s.debtor).reduce((sum, s) => sum + s.amount, 0);
     let creditors = parties.filter(p => p.type === 'creditor').reduce((sum, p) => sum + p.amount, 0);
     creditors += stockPurchases.filter(p => p.creditor).reduce((sum, p) => sum + p.amount, 0);
     creditors += oldJewelPurchases.filter(p => p.creditor).reduce((sum, p) => sum + p.amount, 0);
     let pledgesBalance = pledges.filter(p => !p.redeemed).reduce((sum, p) => sum + p.amount, 0);
-    let goldProfit = goldSalesValue - (goldStockValue * 0.8); // Assuming 20% cost reduction
+    let goldProfit = goldSalesValue - (goldStockValue * 0.8);
     let silverProfit = silverSalesValue - (silverStockValue * 0.8);
     let totalProfit = goldProfit + silverProfit;
     let finalAccounts = '<h3 class="text-xl font-semibold mb-2">Final Accounts</h3>';
@@ -586,7 +626,6 @@ function downloadFinalAccountsPDF() {
     cashBalance -= pledges.reduce((sum, p) => sum + p.amount, 0);
     cashBalance += pledgeRedemptions.reduce((sum, r) => sum + r.amount, 0);
     let debtors = parties.filter(p => p.type === 'debtor').reduce((sum, p) => sum + p.amount, 0);
-    debtors += sales.filter(s => s.debtor).reduce((sum, s) => sum + s.amount, 0);
     let creditors = parties.filter(p => p.type === 'creditor').reduce((sum, p) => sum + p.amount, 0);
     creditors += stockPurchases.filter(p => p.creditor).reduce((sum, p) => sum + p.amount, 0);
     creditors += oldJewelPurchases.filter(p => p.creditor).reduce((sum, p) => sum + p.amount, 0);
