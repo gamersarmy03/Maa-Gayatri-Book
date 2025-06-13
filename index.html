@@ -29,6 +29,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <input type="date" id="stock-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="text" id="stock-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <select id="stock-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                </select>
                 <input type="number" id="stock-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="number" id="stock-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <select id="stock-creditor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
@@ -39,7 +43,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full border table-auto">
                     <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
+                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
                     </thead>
                     <tbody id="stock-purchase-table"></tbody>
                 </table>
@@ -52,6 +56,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <input type="date" id="sale-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="text" id="sale-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <select id="sale-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                </select>
                 <input type="number" id="sale-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="number" id="sale-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <select id="sale-debtor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
@@ -62,7 +70,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full border table-auto">
                     <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Debtor</th></tr>
+                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Debtor</th></tr>
                     </thead>
                     <tbody id="sales-table"></tbody>
                 </table>
@@ -75,6 +83,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <input type="date" id="old-jewel-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="text" id="old-jewel-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <select id="old-jewel-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                </select>
                 <input type="number" id="old-jewel-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="number" id="old-jewel-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <select id="old-jewel-creditor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
@@ -85,7 +97,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full border table-auto">
                     <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
+                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
                     </thead>
                     <tbody id="old-jewel-table"></tbody>
                 </table>
@@ -99,6 +111,10 @@
                 <input type="date" id="pledge-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="text" id="pledge-customer" placeholder="Customer Name" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="text" id="pledge-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <select id="pledge-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                </select>
                 <input type="number" id="pledge-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <input type="number" id="pledge-amount" placeholder="Loan Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
                 <button onclick="addPledge()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Pledge</button>
@@ -106,7 +122,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full border table-auto">
                     <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Customer</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Loan Amount</th></tr>
+                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Customer</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Loan Amount</th></tr>
                     </thead>
                     <tbody id="pledge-table"></tbody>
                 </table>
@@ -185,13 +201,18 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Reports</h2>
             <div class="flex flex-wrap gap-4 mb-6">
                 <button onclick="generateJournal()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Journal</button>
+                <button onclick="downloadJournalPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Journal PDF</button>
                 <button onclick="generateLedger()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Ledger</button>
+                <button onclick="downloadLedgerPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Ledger PDF</button>
                 <button onclick="generateTrialBalance()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Trial Balance</button>
+                <button onclick="downloadTrialBalancePDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Trial Balance PDF</button>
                 <button onclick="generateFinalAccounts()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Final Accounts</button>
+                <button onclick="downloadFinalAccountsPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Final Accounts PDF</button>
             </div>
             <div id="report-output" class="mt-6 p-4 bg-gray-50 rounded-lg"></div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
