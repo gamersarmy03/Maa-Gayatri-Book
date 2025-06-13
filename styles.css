@@ -1,0 +1,12 @@
+.section {
+    display: none;
+}
+.section:not(.hidden) {
+    display: block;
+}
+table {
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+}
