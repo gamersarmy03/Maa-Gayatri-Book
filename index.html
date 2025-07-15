@@ -3,234 +3,1009 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maa Gayatri Book - Jewelry Shop Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Maa Gayatri Ornaments - Accounting & Inventory</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Hide scrollbar for specific elements if needed, but generally avoid */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-r from-yellow-50 to-gray-100 min-h-screen">
-    <div class="container mx-auto p-6 sm:p-8">
-        <h1 class="text-4xl font-extrabold text-center mb-8 text-yellow-800">Maa Gayatri Book</h1>
-        
-        <!-- Navigation Tabs -->
-        <div class="flex flex-wrap justify-center mb-6 gap-2">
-            <button onclick="showSection('home')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Home</button>
-            <button onclick="showSection('stock-purchase')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Stock Purchase</button>
-            <button onclick="showSection('sales')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Sales</button>
-            <button onclick="showSection('old-jewel')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Old Jewel Purchase</button>
-            <button onclick="showSection('pledge')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Pledge</button>
-            <button onclick="showSection('pledge-redeem')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Pledge Redeem</button>
-            <button onclick="showSection('cash')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Cash Transaction</button>
-            <button onclick="showSection('outstanding')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700 transition duration-300">Outstanding/Prepaid</button>
-            <button onclick="showSection('reports')" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-300">Reports</button>
+<body class="flex flex-col md:flex-row min-h-screen bg-gray-100 text-gray-800">
+
+    <!-- Sidebar / Navigation -->
+    <aside class="w-full md:w-64 bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-lg p-4 flex flex-col z-20 md:relative fixed top-0 left-0 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-blue-600">
+            <h1 class="text-2xl font-bold tracking-wide">Maa Gayatri</h1>
+            <button id="closeSidebar" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
-        <!-- Home Section -->
-        <div id="home" class="section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Welcome to Maa Gayatri Book</h2>
-            <p class="text-gray-600 mb-4">Manage your jewelry shop with ease using our comprehensive tools. Track stock purchases, sales, pledges, cash transactions, and more.</p>
-            <ul class="list-disc list-inside text-gray-600">
-                <li>Record new stock and old jewel purchases.</li>
-                <li>Track sales and manage debtor balances.</li>
-                <li>Handle customer pledges and redemptions.</li>
-                <li>Monitor cash receipts and payments, with debtor suggestions.</li>
-                <li>Manage outstanding and prepaid accounts.</li>
-                <li>Generate detailed reports like journals, ledgers, and final accounts.</li>
+        <!-- Navigation Links -->
+        <nav class="flex-grow">
+            <ul>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="dashboard">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 001 1h3m-6-10v6a1 1 0 001 1h2a1 1 0 001-1v-6"></path></svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="sales">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <span>Sales</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="purchases">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        <span>Purchases</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="creditors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1L21 12m-6 6h9m-9-3h.01M3 6h1.01M3 10h4.01M3 14h1.01M3 18h4.01"></path></svg>
+                        <span>Creditors</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="debtors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1L21 12m-6 6h9m-9-3h.01M3 6h1.01M3 10h4.01M3 14h1.01M3 18h4.01"></path></svg>
+                        <span>Debtors</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="cash">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-3h6m-9 1a9 9 0 110 18 9 9 0 010-18z"></path></svg>
+                        <span>Cash Transactions</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="bank">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.007 6.38L18 22h-1a5 5 0 00-5-5H7a5 5 0 00-5 5v1m7-13h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v4a2 2 0 002 2z"></path></svg>
+                        <span>Bank Transactions</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="pledge">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a2 2 0 00-2-2H8a2 2 0 00-2 2v3m0 0l-3 3m12 0l3 3"></path></svg>
+                        <span>Pledge Management</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="reports">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 2v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="nav-link block py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out flex items-center space-x-3" data-section="inventory">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                        <span>Inventory</span>
+                    </a>
+                </li>
             </ul>
-        </div>
+        </nav>
 
-        <!-- Stock Purchase Section -->
-        <div id="stock-purchase" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">New Stock Purchase</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="stock-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="stock-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="stock-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="gold">Gold</option>
-                    <option value="silver">Silver</option>
-                </select>
-                <input type="number" id="stock-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="number" id="stock-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="stock-creditor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="">Select Creditor (Optional)</option>
-                </select>
-                <button onclick="addStockPurchase()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Purchase</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
-                    </thead>
-                    <tbody id="stock-purchase-table"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Sales Section -->
-        <div id="sales" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Sales</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="sale-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="sale-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="sale-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="gold">Gold</option>
-                    <option value="silver">Silver</option>
-                </select>
-                <input type="number" id="sale-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="number" id="sale-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="sale-debtor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="">Select Debtor (Optional)</option>
-                </select>
-                <button onclick="addSale()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Sale</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Debtor</th></tr>
-                    </thead>
-                    <tbody id="sales-table"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Old Jewel Purchase Section -->
-        <div id="old-jewel" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Old Jewel Purchase</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="old-jewel-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="old-jewel-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="old-jewel-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="gold">Gold</option>
-                    <option value="silver">Silver</option>
-                </select>
-                <input type="number" id="old-jewel-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="number" id="old-jewel-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="old-jewel-creditor" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="">Select Creditor (Optional)</option>
-                </select>
-                <button onclick="addOldJewelPurchase()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Purchase</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Creditor</th></tr>
-                    </thead>
-                    <tbody id="old-jewel-table"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Pledge Section -->
-        <div id="pledge" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Customer Pledge</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="pledge-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="pledge-customer" placeholder="Customer Name" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="text" id="pledge-description" placeholder="Item Description" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="pledge-metal" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="gold">Gold</option>
-                    <option value="silver">Silver</option>
-                </select>
-                <input type="number" id="pledge-quantity" placeholder="Quantity (grams)" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="number" id="pledge-amount" placeholder="Loan Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <button onclick="addPledge()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Pledge</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Customer</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Metal</th><th class="border p-3 text-left">Quantity</th><th class="border p-3 text-left">Loan Amount</th></tr>
-                    </thead>
-                    <tbody id="pledge-table"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Pledge Redeem Section -->
-        <div id="pledge-redeem" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Pledge Redemption</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="redeem-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="redeem-pledge" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="">Select Pledge to Redeem</option>
-                </select>
-                <input type="number" id="redeem-amount" placeholder="Repayment Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <button onclick="redeemPledge()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Redeem Pledge</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Customer</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Repayment Amount</th></tr>
-                    </thead>
-                    <tbody id="pledge-redeem-table"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Cash Transaction Section -->
-        <div id="cash" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Cash Transaction</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="date" id="cash-date" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <div class="relative">
-                    <input type="text" id="cash-description" placeholder="Description" list="debtor-suggestions" class="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <datalist id="debtor-suggestions"></datalist>
+        <!-- User Profile/Logout (Placeholder) -->
+        <div class="mt-auto pt-4 border-t border-blue-600">
+            <div class="flex items-center space-x-3 text-sm text-gray-200">
+                <img src="https://placehold.co/40x40/cccccc/ffffff?text=U" alt="User Avatar" class="rounded-full border-2 border-white">
+                <div>
+                    <p class="font-medium">User Name</p>
+                    <p class="text-xs">Logged in via Google</p>
                 </div>
-                <input type="number" id="cash-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="cash-type" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" onchange="updateDebtorSuggestions()">
-                    <option value="receipt">Receipt</option>
-                    <option value="payment">Payment</option>
-                </select>
-                <button onclick="addCashTransaction()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Transaction</button>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Date</th><th class="border p-3 text-left">Description</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Type</th></tr>
-                    </thead>
-                    <tbody id="cash-table"></tbody>
-                </table>
-            </div>
+            <button class="mt-4 w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg transition duration-200 ease-in-out text-sm font-medium">Logout</button>
         </div>
+    </aside>
 
-        <!-- Outstanding/Prepaid Section -->
-        <div id="outstanding" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Outstanding/Prepaid Management</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <input type="text" id="party-name" placeholder="Creditor/Debtor Name" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <input type="number" id="party-amount" placeholder="Amount" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                <select id="party-type" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <option value="creditor">Creditor (Outstanding)</option>
-                    <option value="debtor">Debtor (Outstanding)</option>
-                    <option value="prepaid">Prepaid</option>
-                </select>
-                <button onclick="addParty()" class="bg-yellow-600 text-white p-3 rounded-lg shadow-md hover:bg-yellow-700 transition duration-300 col-span-full sm:col-span-1">Add Party</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border table-auto">
-                    <thead>
-                        <tr class="bg-yellow-100"><th class="border p-3 text-left">Name</th><th class="border p-3 text-left">Amount</th><th class="border p-3 text-left">Type</th></tr>
-                    </thead>
-                    <tbody id="party-table"></tbody>
-                </table>
-            </div>
-        </div>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Bar for Mobile Navigation Toggle -->
+        <header class="bg-white shadow-sm p-4 md:hidden flex items-center justify-between z-10">
+            <button id="openSidebar" class="text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <h2 class="text-xl font-semibold text-gray-800">Maa Gayatri Ornaments</h2>
+            <div class="w-6 h-6"></div> <!-- Placeholder for alignment -->
+        </header>
 
-        <!-- Reports Section -->
-        <div id="reports" class="section hidden bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Reports</h2>
-            <div class="flex flex-wrap gap-4 mb-6">
-                <button onclick="showSection('reports'); generateJournal()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Journal</button>
-                <button onclick="downloadJournalPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Journal PDF</button>
-                <button onclick="showSection('reports'); generateLedger()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Ledger</button>
-                <button onclick="downloadLedgerPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Ledger PDF</button>
-                <button onclick="showSection('reports'); generateTrialBalance()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Trial Balance</button>
-                <button onclick="downloadTrialBalancePDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Trial Balance PDF</button>
-                <button onclick="showSection('reports'); generateFinalAccounts()" class="bg-green-600 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300">Generate Final Accounts</button>
-                <button onclick="downloadFinalAccountsPDF()" class="bg-blue-600 text-white p-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Download Final Accounts PDF</button>
-            </div>
-            <div id="report-output" class="mt-6 p-4 bg-gray-50 rounded-lg"></div>
+        <!-- Content Sections -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800">Dashboard</h2>
+                    <div class="flex space-x-2">
+                        <select class="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option>Today</option>
+                            <option>This Week</option>
+                            <option>This Month</option>
+                            <option>This Year</option>
+                            <option>Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-blue-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Today's Sales</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 1,25,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1L21 12m-6 6h9m-9-3h.01M3 6h1.01M3 10h4.01M3 14h1.01M3 18h4.01"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-emerald-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Today's Purchases</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 50,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-yellow-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Cash in Hand</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 75,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-3h6m-9 1a9 9 0 110 18 9 9 0 010-18z"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-purple-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Bank Balance</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 2,50,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.007 6.38L18 22h-1a5 5 0 00-5-5H7a5 5 0 00-5 5v1m7-13h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v4a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-red-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Total Creditors</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 80,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-green-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Total Debtors</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 45,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-orange-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Pledge from You</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 60,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a2 2 0 00-2-2H8a2 2 0 00-2 2v3m0 0l-3 3m12 0l3 3"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-cyan-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Pledge from Customers</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 30,000</p>
+                        </div>
+                        <svg class="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a2 2 0 00-2-2H8a2 2 0 00-2 2v3m0 0l-3 3m12 0l3 3"></path></svg>
+                    </div>
+                    <!-- Metric Card -->
+                    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between border-l-4 border-indigo-500">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Overall Profit/Loss</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">₹ 2,00,000 (Profit)</p>
+                        </div>
+                        <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sales Section -->
+            <section id="sales" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Sales Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">New Jewelry Sales</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="saleDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="saleDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="saleItemDesc" class="block text-sm font-medium text-gray-700">Item Description</label>
+                            <input type="text" id="saleItemDesc" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="saleGoldWeight" class="block text-sm font-medium text-gray-700">Gold Weight (grams)</label>
+                            <input type="number" step="0.001" id="saleGoldWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="saleSilverWeight" class="block text-sm font-medium text-gray-700">Silver Weight (grams)</label>
+                            <input type="number" step="0.001" id="saleSilverWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="salePurity" class="block text-sm font-medium text-gray-700">Purity (%)</label>
+                            <input type="number" step="0.01" id="salePurity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="saleMakingCharges" class="block text-sm font-medium text-gray-700">Making Charges (₹)</label>
+                            <input type="number" step="0.01" id="saleMakingCharges" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="salePricePerGram" class="block text-sm font-medium text-gray-700">Price per Gram (₹)</label>
+                            <input type="number" step="0.01" id="salePricePerGram" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="saleTotalAmount" class="block text-sm font-medium text-gray-700">Total Amount (₹)</label>
+                            <input type="number" step="0.01" id="saleTotalAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly>
+                        </div>
+                        <div>
+                            <label for="saleCustomerName" class="block text-sm font-medium text-gray-700">Customer Name (Optional)</label>
+                            <input type="text" id="saleCustomerName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="salePaymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                            <select id="salePaymentMethod" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Cash</option>
+                                <option>Bank</option>
+                                <option>UPI</option>
+                                <option>Partial</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="saleDiscount" class="block text-sm font-medium text-gray-700">Discount (₹)</label>
+                            <input type="number" step="0.01" id="saleDiscount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Sale</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Old Metal Exchange (Against New Purchase)</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="exchangeDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="exchangeDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="exchangeOldWeight" class="block text-sm font-medium text-gray-700">Old Metal Weight (grams)</label>
+                            <input type="number" step="0.001" id="exchangeOldWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="exchangeOldPurity" class="block text-sm font-medium text-gray-700">Old Metal Purity (%)</label>
+                            <input type="number" step="0.01" id="exchangeOldPurity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="exchangeAgreedValue" class="block text-sm font-medium text-gray-700">Agreed Value (₹)</label>
+                            <input type="number" step="0.01" id="exchangeAgreedValue" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Exchange</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Purchases Section -->
+            <section id="purchases" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Purchases Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">New Jewelry Purchases</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="purchaseDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="purchaseDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseSupplier" class="block text-sm font-medium text-gray-700">Supplier Details</label>
+                            <input type="text" id="purchaseSupplier" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseItemDesc" class="block text-sm font-medium text-gray-700">Item Description</label>
+                            <input type="text" id="purchaseItemDesc" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseGoldWeight" class="block text-sm font-medium text-gray-700">Gold Weight (grams)</label>
+                            <input type="number" step="0.001" id="purchaseGoldWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseSilverWeight" class="block text-sm font-medium text-gray-700">Silver Weight (grams)</label>
+                            <input type="number" step="0.001" id="purchaseSilverWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchasePurity" class="block text-sm font-medium text-gray-700">Purity (%)</label>
+                            <input type="number" step="0.01" id="purchasePurity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseMakingCharges" class="block text-sm font-medium text-gray-700">Making Charges (₹)</label>
+                            <input type="number" step="0.01" id="purchaseMakingCharges" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchasePricePerGram" class="block text-sm font-medium text-gray-700">Price per Gram (₹)</label>
+                            <input type="number" step="0.01" id="purchasePricePerGram" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="purchaseTotalAmount" class="block text-sm font-medium text-gray-700">Total Amount (₹)</label>
+                            <input type="number" step="0.01" id="purchaseTotalAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly>
+                        </div>
+                        <div>
+                            <label for="purchasePaymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                            <select id="purchasePaymentMethod" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Cash</option>
+                                <option>Bank</option>
+                                <option>UPI</option>
+                                <option>Credit</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Purchase</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Old Metal Purchases (Cash/Bank)</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="oldPurchaseDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="oldPurchaseDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="oldPurchaseCustomer" class="block text-sm font-medium text-gray-700">Customer Details</label>
+                            <input type="text" id="oldPurchaseCustomer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="oldPurchaseWeight" class="block text-sm font-medium text-gray-700">Old Metal Weight (grams)</label>
+                            <input type="number" step="0.001" id="oldPurchaseWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="oldPurchasePurity" class="block text-sm font-medium text-gray-700">Old Metal Purity (%)</label>
+                            <input type="number" step="0.01" id="oldPurchasePurity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="oldPurchaseAmount" class="block text-sm font-medium text-gray-700">Amount Paid (₹)</label>
+                            <input type="number" step="0.01" id="oldPurchaseAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="oldPurchasePaymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                            <select id="oldPurchasePaymentMethod" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Cash</option>
+                                <option>Bank</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Old Metal Purchase</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Creditors Section -->
+            <section id="creditors" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Creditor Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Record New Creditor / Payment</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="creditorDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="creditorDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="creditorName" class="block text-sm font-medium text-gray-700">Creditor Name</label>
+                            <input type="text" id="creditorName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="creditorAmount" class="block text-sm font-medium text-gray-700">Amount (₹)</label>
+                            <input type="number" step="0.01" id="creditorAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="creditorType" class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                            <select id="creditorType" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Amount Payable</option>
+                                <option>Payment Made</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="creditorPaymentMethod" class="block text-sm font-medium text-gray-700">Payment Method (if payment)</label>
+                            <select id="creditorPaymentMethod" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>N/A</option>
+                                <option>Cash</option>
+                                <option>Bank</option>
+                                <option>UPI</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Creditor Transaction</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Outstanding Creditors</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Creditor Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outstanding Amount (₹)</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Transaction</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">Supplier A</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 30,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-10</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">Supplier B</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 50,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-05</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Debtors Section -->
+            <section id="debtors" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Debtor Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Record New Debtor / Payment Received</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="debtorDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="debtorDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="debtorName" class="block text-sm font-medium text-gray-700">Debtor Name</label>
+                            <input type="text" id="debtorName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="debtorAmount" class="block text-sm font-medium text-gray-700">Amount (₹)</label>
+                            <input type="number" step="0.01" id="debtorAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="debtorType" class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                            <select id="debtorType" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Amount Receivable</option>
+                                <option>Payment Received</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="debtorPaymentMethod" class="block text-sm font-medium text-gray-700">Payment Method (if payment)</label>
+                            <select id="debtorPaymentMethod" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>N/A</option>
+                                <option>Cash</option>
+                                <option>Bank</option>
+                                <option>UPI</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Debtor Transaction</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Outstanding Debtors</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Debtor Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outstanding Amount (₹)</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Transaction</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">Customer X</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 15,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-12</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">Customer Y</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 30,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-08</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cash Transactions Section -->
+            <section id="cash" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Cash Transactions</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Record Cash In/Out</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="cashDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="cashDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="cashType" class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                            <select id="cashType" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Cash In</option>
+                                <option>Cash Out</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cashAmount" class="block text-sm font-medium text-gray-700">Amount (₹)</label>
+                            <input type="number" step="0.01" id="cashAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="cashDescription" class="block text-sm font-medium text-gray-700">Description (e.g., Owner's Capital, Expense)</label>
+                            <input type="text" id="cashDescription" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Cash Transaction</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Recent Cash Transactions</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount (₹)</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-14</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-green-600">Cash In</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 10,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Owner's Capital</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-red-600">Cash Out</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 2,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Office Supplies</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bank Transactions Section -->
+            <section id="bank" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Bank Transactions</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Record Bank In/Out</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="bankDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="bankDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="bankType" class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                            <select id="bankType" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option>Bank In</option>
+                                <option>Bank Out</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="bankAmount" class="block text-sm font-medium text-gray-700">Amount (₹)</label>
+                            <input type="number" step="0.01" id="bankAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="bankDescription" class="block text-sm font-medium text-gray-700">Description (e.g., Loan Received, Rent Paid)</label>
+                            <input type="text" id="bankDescription" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Bank Transaction</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Recent Bank Transactions</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount (₹)</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-14</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-green-600">Bank In</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 50,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Customer Payment</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">2024-07-13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-red-600">Bank Out</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₹ 15,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Supplier Payment</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pledge Management Section -->
+            <section id="pledge" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Pledge Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Pledge From Me (Payments Made for Pledged Items)</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="pledgeFromMeDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="pledgeFromMeDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeCustomer" class="block text-sm font-medium text-gray-700">Customer Name</label>
+                            <input type="text" id="pledgeFromMeCustomer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeItemDesc" class="block text-sm font-medium text-gray-700">Item Description</label>
+                            <input type="text" id="pledgeFromMeItemDesc" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeWeight" class="block text-sm font-medium text-gray-700">Weight (grams)</label>
+                            <input type="number" step="0.001" id="pledgeFromMeWeight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMePurity" class="block text-sm font-medium text-gray-700">Purity (%)</label>
+                            <input type="number" step="0.01" id="pledgeFromMePurity" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeAmount" class="block text-sm font-medium text-gray-700">Amount Advanced (₹)</label>
+                            <input type="number" step="0.01" id="pledgeFromMeAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeInterestTerms" class="block text-sm font-medium text-gray-700">Interest Terms</label>
+                            <input type="text" id="pledgeFromMeInterestTerms" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromMeDueDate" class="block text-sm font-medium text-gray-700">Due Date</label>
+                            <input type="date" id="pledgeFromMeDueDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Pledge (You)</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Pledge From Customer (Customer's Pledge Repayments)</h3>
+                    <form onsubmit="handleSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="pledgeFromCustomerDate" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="pledgeFromCustomerDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromCustomerCustomer" class="block text-sm font-medium text-gray-700">Customer Name</label>
+                            <input type="text" id="pledgeFromCustomerCustomer" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromCustomerAmount" class="block text-sm font-medium text-gray-700">Amount Repaid (₹)</label>
+                            <input type="number" step="0.01" id="pledgeFromCustomerAmount" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromCustomerPrincipal" class="block text-sm font-medium text-gray-700">Principal Repaid (₹)</label>
+                            <input type="number" step="0.01" id="pledgeFromCustomerPrincipal" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="pledgeFromCustomerInterest" class="block text-sm font-medium text-gray-700">Interest Paid (₹)</label>
+                            <input type="number" step="0.01" id="pledgeFromCustomerInterest" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">Record Pledge Repayment</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Automated Reports</h2>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-700">Report Filters</h3>
+                        <div class="flex space-x-2">
+                            <input type="date" class="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <span class="self-center">to</span>
+                            <input type="date" class="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out">Apply Filter</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm flex flex-col items-center">
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Journal Entries</h4>
+                            <p class="text-gray-600 text-center text-sm mb-4">Chronological record of all transactions.</p>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">View Report</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out mt-2">Download PDF</button>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm flex flex-col items-center">
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Ledger Accounts</h4>
+                            <p class="text-gray-600 text-center text-sm mb-4">Individual accounts for all categories.</p>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">View Report</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out mt-2">Download PDF</button>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm flex flex-col items-center">
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Trial Balance</h4>
+                            <p class="text-gray-600 text-center text-sm mb-4">Summary of all ledger balances.</p>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">View Report</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out mt-2">Download PDF</button>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm flex flex-col items-center">
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Balance Sheet</h4>
+                            <p class="text-gray-600 text-center text-sm mb-4">Snapshot of assets, liabilities, and equity.</p>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">View Report</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out mt-2">Download PDF</button>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm flex flex-col items-center">
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Profit & Loss Statement</h4>
+                            <p class="text-gray-600 text-center text-sm mb-4">Business profitability over a period.</p>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">View Report</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out mt-2">Download PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Section -->
+            <section id="inventory" class="content-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Inventory Management</h2>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Current Stock by Weight</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Gold Stock Card -->
+                        <div class="bg-yellow-50 rounded-xl shadow-sm p-6 flex items-center justify-between border-l-4 border-yellow-600">
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase font-semibold">Gold Stock</p>
+                                <p class="text-2xl font-bold text-gray-900 mt-1">5,250 grams</p>
+                            </div>
+                            <svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 14.586l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 12 6.293 7.707a1 1 0 011.414-1.414L12 10.586l4.293-4.293a1 1 0 011.414 1.414L13.414 12l4.293 4.293a1 1 0 01-1.414 1.414L12 13.414z"></path></svg>
+                        </div>
+                        <!-- Silver Stock Card -->
+                        <div class="bg-gray-100 rounded-xl shadow-sm p-6 flex items-center justify-between border-l-4 border-gray-600">
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase font-semibold">Silver Stock</p>
+                                <p class="text-2xl font-bold text-gray-900 mt-1">15,700 grams</p>
+                            </div>
+                            <svg class="w-10 h-10 text-gray-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 14.586l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 12 6.293 7.707a1 1 0 011.414-1.414L12 10.586l4.293-4.293a1 1 0 011.414 1.414L13.414 12l4.293 4.293a1 1 0 01-1.414 1.414L12 13.414z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Message Box Modal -->
+    <div id="messageModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <p id="modalMessage" class="text-lg font-medium text-gray-800"></p>
+            <button onclick="closeModal()" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out">OK</button>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+        // Get references to elements
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const messageModal = document.getElementById('messageModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Function to show a specific section and hide others
+        function showSection(sectionId) {
+            contentSections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                    section.classList.add('active'); // Add active class for styling if needed
+                } else {
+                    section.classList.add('hidden');
+                    section.classList.remove('active');
+                }
+            });
+
+            // Update active link styling
+            navLinks.forEach(link => {
+                if (link.dataset.section === sectionId) {
+                    link.classList.add('bg-blue-600');
+                } else {
+                    link.classList.remove('bg-blue-600');
+                }
+            });
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth < 768) { // Tailwind's 'md' breakpoint is 768px
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        // Function to show the modal message
+        function showModal(message) {
+            modalMessage.textContent = message;
+            messageModal.classList.remove('hidden');
+            messageModal.classList.add('flex'); // Use flex to center
+        }
+
+        // Function to close the modal message
+        function closeModal() {
+            messageModal.classList.add('hidden');
+            messageModal.classList.remove('flex');
+        }
+
+        // Handle form submissions
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent actual form submission
+            showModal("This is a UI prototype. Data submission is not yet implemented. Please set up Appwrite for full functionality!");
+            // You can add logic here to collect form data and send it to Appwrite later
+        }
+
+        // Event listeners for navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link behavior
+                const sectionId = link.dataset.section;
+                showSection(sectionId);
+            });
+        });
+
+        // Toggle sidebar for mobile
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+        });
+
+        // Close modal when clicking on the close button
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Initial load: show dashboard and make its link active
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('dashboard');
+        });
+
+        // Basic form calculations (example for Sales)
+        const saleGoldWeight = document.getElementById('saleGoldWeight');
+        const saleSilverWeight = document.getElementById('saleSilverWeight');
+        const saleMakingCharges = document.getElementById('saleMakingCharges');
+        const salePricePerGram = document.getElementById('salePricePerGram');
+        const saleTotalAmount = document.getElementById('saleTotalAmount');
+
+        function calculateSaleTotal() {
+            const goldWeight = parseFloat(saleGoldWeight.value) || 0;
+            const silverWeight = parseFloat(saleSilverWeight.value) || 0;
+            const makingCharges = parseFloat(saleMakingCharges.value) || 0;
+            const pricePerGram = parseFloat(salePricePerGram.value) || 0;
+
+            // Simple calculation: (Gold + Silver Weight) * Price per Gram + Making Charges
+            const total = (goldWeight + silverWeight) * pricePerGram + makingCharges;
+            saleTotalAmount.value = total.toFixed(2); // Format to 2 decimal places
+        }
+
+        // Add event listeners for input changes
+        saleGoldWeight.addEventListener('input', calculateSaleTotal);
+        saleSilverWeight.addEventListener('input', calculateSaleTotal);
+        saleMakingCharges.addEventListener('input', calculateSaleTotal);
+        salePricePerGram.addEventListener('input', calculateSaleTotal);
+
+        // Basic form calculations (example for Purchases)
+        const purchaseGoldWeight = document.getElementById('purchaseGoldWeight');
+        const purchaseSilverWeight = document.getElementById('purchaseSilverWeight');
+        const purchaseMakingCharges = document.getElementById('purchaseMakingCharges');
+        const purchasePricePerGram = document.getElementById('purchasePricePerGram');
+        const purchaseTotalAmount = document.getElementById('purchaseTotalAmount');
+
+        function calculatePurchaseTotal() {
+            const goldWeight = parseFloat(purchaseGoldWeight.value) || 0;
+            const silverWeight = parseFloat(purchaseSilverWeight.value) || 0;
+            const makingCharges = parseFloat(purchaseMakingCharges.value) || 0;
+            const pricePerGram = parseFloat(purchasePricePerGram.value) || 0;
+
+            // Simple calculation: (Gold + Silver Weight) * Price per Gram + Making Charges
+            const total = (goldWeight + silverWeight) * pricePerGram + makingCharges;
+            purchaseTotalAmount.value = total.toFixed(2); // Format to 2 decimal places
+        }
+
+        // Add event listeners for input changes
+        purchaseGoldWeight.addEventListener('input', calculatePurchaseTotal);
+        purchaseSilverWeight.addEventListener('input', calculatePurchaseTotal);
+        purchaseMakingCharges.addEventListener('input', calculatePurchaseTotal);
+        purchasePricePerGram.addEventListener('input', calculatePurchaseTotal);
+
+    </script>
 </body>
 </html>
